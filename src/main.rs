@@ -17,7 +17,7 @@ struct Specification {
     maintainer: String,
     target_version: String,
     status: String,
-    requirements: Option<Vec<Requirement>>,
+    requirements: Vec<Requirement>,
 }
 
 impl Requirement {
@@ -30,8 +30,27 @@ impl Requirement {
     }
 }
 
+impl Specification {
+    fn new(
+        name: &str,
+        maintainer: &str,
+        target_version: &str,
+        status: &str,
+        requirements: &mut Vec<Requirement>
+    ) -> Self {
+        Specification {
+            name: name.to_string(),
+            last_revised: chrono::Utc::today(),
+            maintainer: maintainer.to_string(),
+            target_version: target_version.to_string(),
+            status: status.to_string(),
+            requirements: requirements.to_vec(),
+        }
+    }
+}
+
 fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
-    let name: String = promptly::prompt("Requirement")?;
+    let name: String = promptly::prompt("Requirement Name")?;
     let explanation: String = promptly::prompt("Explanation")?;
     let priority: String = promptly::prompt("Priority")?;
 
@@ -44,14 +63,13 @@ fn main() -> Result<(), promptly::ReadlineError> {
     let target_version: String = promptly::prompt("Target Version")?;
     let status: String = promptly::prompt("Status")?;
 
-    let mut spec = Specification {
-        name: name,
-        last_revised: chrono::Utc::today(),
-        maintainer: maintainer,
-        target_version: target_version,
-        status: status,
-        requirements: None,
-    };
+    let mut spec = Specification::new(
+        &name,
+        &maintainer,
+        &target_version,
+        &status,
+        &mut vec![],
+    );
 
     let mut want_new_requirement = true;
     while want_new_requirement {
@@ -67,6 +85,11 @@ fn main() -> Result<(), promptly::ReadlineError> {
             });
         }
     }
-    
+
+    println!("{}", spec.last_revised);
+    for requirement in spec.requirements.iter() {
+        println!("{}", requirement.name);
+    }
+
     Ok(())
 }
