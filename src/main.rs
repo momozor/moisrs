@@ -4,6 +4,7 @@ extern crate serde_yaml;
 extern crate prettytable;
 extern crate promptly;
 
+#[derive(Clone)]
 struct Requirement {
     name: String,
     explanation: String,
@@ -29,6 +30,25 @@ impl Requirement {
     }
 }
 
+impl Specification {
+    fn new(
+        name: &str,
+        maintainer: &str,
+        target_version: &str,
+        status: &str,
+        requirements: &mut Vec<Requirement>
+    ) -> Self {
+        Specification {
+            name: name.to_string(),
+            last_revised: chrono::Utc::now(),
+            maintainer: maintainer.to_string(),
+            target_version: target_version.to_string(),
+            status: status.to_string(),
+            requirements: requirements.to_vec(),
+        }
+    }
+}
+
 fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     let name: String = promptly::prompt("Requirement")?;
     let explanation: String = promptly::prompt("Explanation")?;
@@ -37,30 +57,20 @@ fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     Ok(Requirement::new(&name, &explanation, &priority))
 }
 
-impl Specification {
-    fn new(
-        name: &str,
-        maintainer: &str,
-        target_version: &str,
-        status: &str,
-        requirements: Vec<Requirement>
-    ) -> Self {
-        Specification {
-            name: name.to_string(),
-            last_revised: chrono::Utc::now(),
-            maintainer: maintainer.to_string(),
-            target_version: target_version.to_string(),
-            status: status.to_string(),
-            requirements: requirements
-        }
-    }
-}
-
 fn main() -> Result<(), promptly::ReadlineError> {
-    let project_name: String = promptly::prompt("Project Name")?;
+    let name: String = promptly::prompt("Project Name")?;
     let maintainer: String = promptly::prompt("Maintainer")?;
     let target_version: String = promptly::prompt("Target Version")?;
     let status: String = promptly::prompt("Status")?;
+
+    let mut spec = Specification::new(
+        &name,
+        &maintainer,
+        &target_version,
+        &status,
+        &mut vec![Requirement::new("owo", "owo", "owo")],
+
+    );
 
     let mut want_new_requirement = true;
     while want_new_requirement {
@@ -70,9 +80,14 @@ fn main() -> Result<(), promptly::ReadlineError> {
             want_new_requirement = false;
         }
         else if do_proceed {
-            show_requirement_prompt();
+            &spec.requirements.push(match show_requirement_prompt() {
+                Ok(requirement) => requirement,
+                Err(_) => panic!("Requirement empty!"),
+            });
         }
     }
+
+    println!("{}", spec.name);
 
     Ok(())
 }
