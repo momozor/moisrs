@@ -54,5 +54,17 @@ fn main() -> Result<(), promptly::ReadlineError> {
     let target_version: String = promptly::prompt("Target Version")?;
     let status: String = promptly::prompt("Status")?;
 
+    let mut want_new_requirement = true;
+    while want_new_requirement {
+        let do_proceed: bool = promptly::prompt_default("Create a new requirement", false)?;
+
+        if !do_proceed {
+            want_new_requirement = false;
+        }
+        else if do_proceed {
+            want_new_requirement = true;
+        }
+    }
+
     Ok(())
 }
