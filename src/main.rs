@@ -29,6 +29,14 @@ impl Requirement {
     }
 }
 
+fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
+    let name: String = promptly::prompt("Requirement")?;
+    let explanation: String = promptly::prompt("Explanation")?;
+    let priority: String = promptly::prompt("Priority")?;
+
+    Ok(Requirement::new(&name, &explanation, &priority))
+}
+
 impl Specification {
     fn new(
         name: &str,
@@ -62,7 +70,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
             want_new_requirement = false;
         }
         else if do_proceed {
-            want_new_requirement = true;
+            show_requirement_prompt();
         }
     }
 
