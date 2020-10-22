@@ -5,6 +5,8 @@ extern crate serde_yaml;
 extern crate promptly;
 
 use std::fs;
+use std::env;
+use std::process;
 
 #[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 struct Requirement {
@@ -58,7 +60,7 @@ fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     Ok(Requirement::new(&name, &explanation, &priority))
 }
 
-fn specification_as_table(filename: String) {
+fn show_specification_as_table(filename: String) {
     let specification_source: String = fs::read_to_string(filename).expect("Cannot open SPEC file for reading!");
     let specification: Specification = match serde_yaml::from_str(&specification_source) {
         Ok(specification) => specification,
@@ -79,6 +81,8 @@ fn specification_as_table(filename: String) {
 }
 
 fn main() -> Result<(), promptly::ReadlineError> {
+    let specification_file: String = "SPEC".to_string();
+
     let name: String = promptly::prompt("Project Name")?;
     let maintainer: String = promptly::prompt("Maintainer")?;
     let target_version: String = promptly::prompt("Target Version")?;
@@ -109,7 +113,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
 
     match serde_yaml::to_string(&spec) {
         Ok(spec) => {
-            fs::write("SPEC", spec).expect("Cannot write to spec file!");
+            fs::write(specification_file, spec).expect("Cannot write to spec file!");
         },
         Err(_) => panic!("Cannot covnert specification structure to YAML string!"),
     }
