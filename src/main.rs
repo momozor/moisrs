@@ -1,11 +1,11 @@
 extern crate chrono;
+extern crate clap;
 extern crate serde;
 extern crate serde_yaml;
 #[macro_use] extern crate prettytable;
 extern crate promptly;
 
 use std::fs;
-use std::env;
 use std::process;
 
 #[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -73,15 +73,33 @@ fn show_specification_as_table(filename: String) {
     table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
     table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
     table.add_row(prettytable::row!["Status: ", specification.status]);
-    table.add_empty_row();
-    table.add_empty_row();
-    table.add_empty_row();
+
+    for requirement in specification.requirements.iter() {
+        table.add_empty_row();
+        table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
+        table.add_row(prettytable::row!["Explanation: ", requirement.explanation]);
+        table.add_row(prettytable::row!["Priority: ", requirement.priority]);
+    }
 
     table.printstd();
 }
 
 fn main() -> Result<(), promptly::ReadlineError> {
+    let matches = clap::App::new("moisrs")
+        .version("0.1.0")
+        .about("Generate and view software requirement specification (SRS) with ease")
+        .author("Momozor <momozor4@gmail.com>")
+        .arg("-s, --show 'View existing SPEC file in ASCII table format'")
+        .get_matches();
+
     let specification_file: String = "SPEC".to_string();
+    match matches.occurrences_of("show") {
+        1 => {
+            show_specification_as_table(specification_file);
+            process::exit(0);
+        },
+        _ => ()
+    }
 
     let name: String = promptly::prompt("Project Name")?;
     let maintainer: String = promptly::prompt("Maintainer")?;
@@ -115,7 +133,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
         Ok(spec) => {
             fs::write(specification_file, spec).expect("Cannot write to spec file!");
         },
-        Err(_) => panic!("Cannot covnert specification structure to YAML string!"),
+        Err(_) => panic!("Cannot convert specification structure to YAML string!"),
     }
 
     Ok(())
