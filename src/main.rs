@@ -2,8 +2,7 @@ extern crate chrono;
 extern crate serde;
 extern crate serde_yaml;
 extern crate prettytable;
-
-use std::io::{self, BufReader};
+extern crate promptly;
 
 enum Priority {
     low,
@@ -27,7 +26,6 @@ struct Specification {
     name: String,
     last_revised: chrono::DateTime<chrono::Utc>,
     maintainer: String,
-    end_date: chrono::DateTime<chrono::Utc>,
     target_version: String,
     status: Status,
     requirements: Vec<Requirement>,
@@ -47,7 +45,6 @@ impl Specification {
     fn new(
         name: &str,
         maintainer: &str,
-        end_date: chrono::DateTime<chrono::Utc>,
         target_version: &str,
         status: Status,
         requirements: Vec<Requirement>
@@ -56,7 +53,6 @@ impl Specification {
             name: name.to_string(),
             last_revised: chrono::Utc::now(),
             maintainer: maintainer.to_string(),
-            end_date: end_date,
             target_version: target_version.to_string(),
             status: status,
             requirements: requirements
@@ -64,6 +60,9 @@ impl Specification {
     }
 }
 
-fn main() {
-    println!("Hello, world!");
+fn main() -> Result<(), promptly::ReadlineError> {
+    let project_name: String = promptly::prompt("Project Name")?;
+    let maintainer: String = promptly::prompt("Maintainer")?;
+
+    Ok(())
 }
