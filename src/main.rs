@@ -1,19 +1,21 @@
 extern crate chrono;
 extern crate serde;
 extern crate serde_yaml;
-extern crate prettytable;
+#[macro_use] extern crate prettytable;
 extern crate promptly;
 
-#[derive(Clone)]
+use std::fs;
+
+#[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 struct Requirement {
     name: String,
     explanation: String,
     priority: String,
 }
 
+#[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 struct Specification {
     name: String,
-    last_revised: chrono::Date<chrono::Utc>,
     maintainer: String,
     target_version: String,
     status: String,
@@ -40,7 +42,6 @@ impl Specification {
     ) -> Self {
         Specification {
             name: name.to_string(),
-            last_revised: chrono::Utc::today(),
             maintainer: maintainer.to_string(),
             target_version: target_version.to_string(),
             status: status.to_string(),
@@ -55,6 +56,26 @@ fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     let priority: String = promptly::prompt("Priority")?;
 
     Ok(Requirement::new(&name, &explanation, &priority))
+}
+
+fn specification_as_table(filename: String) {
+    let specification_source: String = fs::read_to_string(filename).expect("Cannot open SPEC file for reading!");
+    let specification: Specification = match serde_yaml::from_str(&specification_source) {
+        Ok(specification) => specification,
+        Err(_) => panic!("SPEC file cannot be parsed!"),
+    };
+
+    let mut table = prettytable::Table::new();
+
+    table.add_row(prettytable::row!["Project Name: ", specification.name]);
+    table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
+    table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
+    table.add_row(prettytable::row!["Status: ", specification.status]);
+    table.add_empty_row();
+    table.add_empty_row();
+    table.add_empty_row();
+
+    table.printstd();
 }
 
 fn main() -> Result<(), promptly::ReadlineError> {
@@ -86,9 +107,11 @@ fn main() -> Result<(), promptly::ReadlineError> {
         }
     }
 
-    println!("{}", spec.last_revised);
-    for requirement in spec.requirements.iter() {
-        println!("{}", requirement.name);
+    match serde_yaml::to_string(&spec) {
+        Ok(spec) => {
+            fs::write("SPEC", spec).expect("Cannot write to spec file!");
+        },
+        Err(_) => panic!("Cannot covnert specification structure to YAML string!"),
     }
 
     Ok(())
