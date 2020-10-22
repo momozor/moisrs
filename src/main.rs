@@ -13,7 +13,7 @@ struct Requirement {
 
 struct Specification {
     name: String,
-    last_revised: chrono::DateTime<chrono::Utc>,
+    last_revised: chrono::Date<chrono::Utc>,
     maintainer: String,
     target_version: String,
     status: String,
@@ -40,7 +40,7 @@ impl Specification {
     ) -> Self {
         Specification {
             name: name.to_string(),
-            last_revised: chrono::Utc::now(),
+            last_revised: chrono::Utc::today(),
             maintainer: maintainer.to_string(),
             target_version: target_version.to_string(),
             status: status.to_string(),
@@ -68,7 +68,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
         &maintainer,
         &target_version,
         &status,
-        &mut vec![Requirement::new("owo", "owo", "owo")],
+        &mut vec![Requirement::new("", "", "")],
 
     );
 
@@ -87,7 +87,10 @@ fn main() -> Result<(), promptly::ReadlineError> {
         }
     }
 
-    println!("{}", spec.name);
+    println!("{}", spec.last_revised);
+    for requirement in spec.requirements.iter() {
+        println!("{}", requirement.name);
+    }
 
     Ok(())
 }
