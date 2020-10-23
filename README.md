@@ -11,9 +11,11 @@ specification (SRS) easily.
 
 ## Installation
 
+> This software is not available on crates.io on purpose.
+
 > Please make sure that `.cargo/bin/` is in your `PATH`.
 
-`cargo install moisrs`
+`cargo install --path .`
 
 
 ## Usage
