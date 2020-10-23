@@ -3,6 +3,14 @@ name = "moisrs"
 version = "0.2.0"
 authors = ["Momozor <momozor4@gmail.com>"]
 edition = "2018"
+description = "Generate and view informal software requirement specification (SRS) easily."
+readme = "README.md"
+homepage = "https://github.com/momozor/moisrs"
+repository = "https://github.com/momozor/moisrs"
+license = "GPL-3.0-or-later"
+license-file = "COPYING"
+keywords = ["cli", "utility", "productivity"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
