@@ -5,11 +5,11 @@ specification (SRS) easily.
 
 ## Version
 
-0.1.0
+0.2.0
 
 ## Installation
 
-Add this line to your application's Gemfile:
+cargo install
 
 ## Usage
 

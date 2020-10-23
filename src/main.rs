@@ -30,7 +30,7 @@ struct Requirement {
     priority: String,
 }
 
-#[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(PartialEq, serde::Serialize, serde::Deserialize)]
 struct Specification {
     name: String,
     maintainer: String,
@@ -121,7 +121,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
     let target_version: String = promptly::prompt("Target Version")?;
     let status: String = promptly::prompt("Status")?;
 
-    let mut spec = Specification::new(
+    let mut specification = Specification::new(
         &name,
         &maintainer,
         &target_version,
@@ -137,16 +137,16 @@ fn main() -> Result<(), promptly::ReadlineError> {
             want_new_requirement = false;
         }
         else if do_proceed {
-            &spec.requirements.push(match show_requirement_prompt() {
+            &specification.requirements.push(match show_requirement_prompt() {
                 Ok(requirement) => requirement,
                 Err(_) => panic!("Requirement is empty!"),
             });
         }
     }
 
-    match serde_yaml::to_string(&spec) {
-        Ok(spec) => {
-            fs::write(specification_file, spec).expect("Cannot write to spec file!");
+    match serde_yaml::to_string(&specification) {
+        Ok(specification) => {
+            fs::write(specification_file, specification).expect("Cannot write to specification file!");
         },
         Err(_) => panic!("Cannot convert specification structure to YAML string!"),
     }
