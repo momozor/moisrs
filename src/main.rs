@@ -30,7 +30,7 @@ struct Requirement {
     priority: String,
 }
 
-#[derive(PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 struct Specification {
     name: String,
 
@@ -47,7 +47,7 @@ mod moisrs_date {
     use chrono::{DateTime, Utc, TimeZone};
     use serde::{self, Deserialize, Serializer, Deserializer};
 
-    const FORMAT: &'static str = "%d-%m-%Y-UTC";
+    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
 
     pub fn serialize<S>(
         date: &DateTime<Utc>,
@@ -68,7 +68,6 @@ mod moisrs_date {
     {
         let s = String::deserialize(deserializer)?;
         Utc.datetime_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
-
     }
 }
 
@@ -119,6 +118,7 @@ fn show_specification_as_table(filename: String) {
     let mut table = prettytable::Table::new();
 
     table.add_row(prettytable::row!["Project Name: ", specification.name]);
+    table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
     table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
     table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
     table.add_row(prettytable::row!["Status: ", specification.status]);
@@ -129,7 +129,6 @@ fn show_specification_as_table(filename: String) {
         table.add_row(prettytable::row!["Explanation: ", requirement.explanation]);
         table.add_row(prettytable::row!["Priority: ", requirement.priority]);
     }
-
     table.printstd();
 }
 
