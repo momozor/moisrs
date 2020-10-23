@@ -8,7 +8,6 @@ readme = "README.md"
 homepage = "https://github.com/momozor/moisrs"
 repository = "https://github.com/momozor/moisrs"
 license = "GPL-3.0-or-later"
-license-file = "COPYING"
 keywords = ["cli", "utility", "productivity"]
 categories = ["command-line-utilities"]
 
