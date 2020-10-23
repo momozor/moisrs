@@ -34,7 +34,7 @@ struct Requirement {
 struct Specification {
     name: String,
 
-    #[serde(with = "moisrs_date")]
+    #[serde(with = "moisrs_date")] 
     last_revised: chrono::DateTime<chrono::Utc>,
 
     maintainer: String,
@@ -109,33 +109,53 @@ fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
 }
 
 fn show_specification_as_table(filename: String) {
-    let specification_source: String = fs::read_to_string(filename).expect("Cannot open SPEC file for reading!");
-    let specification: Specification = match serde_yaml::from_str(&specification_source) {
-        Ok(specification) => specification,
-        Err(_) => panic!("SPEC file cannot be parsed!"),
+    let specification_source: String = fs::read_to_string(filename)
+        .expect("Cannot open SPEC file for reading!");
+    let specification: Specification =
+        match serde_yaml::from_str(&specification_source) {
+            Ok(specification) => specification,
+            Err(_) => panic!("SPEC file cannot be parsed!"),
     };
 
     let mut table = prettytable::Table::new();
 
-    table.add_row(prettytable::row!["Project Name: ", specification.name]);
-    table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
-    table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
-    table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
-    table.add_row(prettytable::row!["Status: ", specification.status]);
+    table.add_row(prettytable::row![
+        "Project Name: ", specification.name
+    ]);
+    table.add_row(prettytable::row![
+        "Last Revised: ", specification.last_revised
+    ]);
+    table.add_row(prettytable::row![
+        "Maintainer: ", specification.maintainer
+    ]);
+    table.add_row(prettytable::row![
+        "Target Version: ", specification.target_version
+    ]);
+    table.add_row(prettytable::row![
+        "Status: ", specification.status
+    ]);
 
     for requirement in specification.requirements.iter() {
         table.add_empty_row();
-        table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
-        table.add_row(prettytable::row!["Explanation: ", requirement.explanation]);
-        table.add_row(prettytable::row!["Priority: ", requirement.priority]);
+        table.add_row(prettytable::row![
+            "Requirement Name: ", requirement.name
+        ]);
+        table.add_row(prettytable::row![
+            "Explanation: ", requirement.explanation
+        ]);
+        table.add_row(prettytable::row![
+            "Priority: ", requirement.priority
+        ]);
     }
     table.printstd();
 }
 
 fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
-        .version("0.1.0")
-        .about("Generate and view software requirement specification (SRS) with ease")
+        .version("0.2.0")
+        .about(
+            "Generate and view software requirement specification (SRS) easily"
+        )
         .author("Momozor <momozor4@gmail.com>")
         .arg("-s, --show 'View existing SPEC file in ASCII table format'")
         .get_matches();
@@ -164,7 +184,8 @@ fn main() -> Result<(), promptly::ReadlineError> {
 
     let mut want_new_requirement = true;
     while want_new_requirement {
-        let do_proceed: bool = promptly::prompt_default("Create a new requirement", false)?;
+        let do_proceed: bool = 
+            promptly::prompt_default("Create a new requirement", false)?;
 
         if !do_proceed {
             want_new_requirement = false;
@@ -179,9 +200,11 @@ fn main() -> Result<(), promptly::ReadlineError> {
 
     match serde_yaml::to_string(&specification) {
         Ok(specification) => {
-            fs::write(specification_file, specification).expect("Cannot write to specification file!");
+            fs::write(specification_file, specification)
+                .expect("Cannot write to specification file!");
         },
-        Err(_) => panic!("Cannot convert specification structure to YAML string!"),
+        Err(_) => 
+            panic!("Cannot convert specification structure to YAML string!"),
     }
 
     Ok(())
