@@ -33,10 +33,43 @@ struct Requirement {
 #[derive(PartialEq, serde::Serialize, serde::Deserialize)]
 struct Specification {
     name: String,
+
+    #[serde(with = "moisrs_date")]
+    last_revised: chrono::DateTime<chrono::Utc>,
+
     maintainer: String,
     target_version: String,
     status: String,
     requirements: Vec<Requirement>,
+}
+
+mod moisrs_date {
+    use chrono::{DateTime, Utc, TimeZone};
+    use serde::{self, Deserialize, Serializer, Deserializer};
+
+    const FORMAT: &'static str = "%d-%m-%Y-UTC";
+
+    pub fn serialize<S>(
+        date: &DateTime<Utc>,
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let s = format!("{}", date.format(FORMAT));
+        serializer.serialize_str(&s)
+    }
+
+    pub fn deserialize<'de, D>(
+        deserializer: D,
+    ) -> Result<DateTime<Utc>, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let s = String::deserialize(deserializer)?;
+        Utc.datetime_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
+
+    }
 }
 
 impl Requirement {
@@ -59,6 +92,7 @@ impl Specification {
     ) -> Self {
         Specification {
             name: name.to_string(),
+            last_revised: chrono::Utc::now(),
             maintainer: maintainer.to_string(),
             target_version: target_version.to_string(),
             status: status.to_string(),
