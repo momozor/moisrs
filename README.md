@@ -13,7 +13,7 @@ specification (SRS) easily.
 
 > Please make sure that `.cargo/bin/` is in your `PATH`.
 
-`cargo install --path .`
+`cargo install moisrs`
 
 
 ## Usage
