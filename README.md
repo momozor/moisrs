@@ -11,14 +11,16 @@ specification (SRS) easily.
 
 ## Installation
 
-cargo install
+> Please make sure that `.cargo/bin/` is in your `PATH`.
+
+`cargo install --path .`
 
 
 ## Usage
 
 *moisrs* comes as a CLI program.
-Once installed, you can invoke *moisrs* from the command line to generate a `SPEC`
-YAML formatted file based on your software/project requirements.
+Once installed, you can invoke *moisrs* from the command line to generate a
+`SPEC` YAML formatted file based on your software/project requirements.
 
 To view the YAML file as table, just run `moisrs --show` in the directory
 where `SPEC` file is located.
