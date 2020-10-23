@@ -22,6 +22,7 @@ extern crate promptly;
 
 use std::fs;
 use std::process;
+use std::path;
 
 #[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 struct Requirement {
@@ -47,7 +48,7 @@ mod moisrs_date {
     use chrono::{DateTime, Utc, TimeZone};
     use serde::{self, Deserialize, Serializer, Deserializer};
 
-    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
+    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S UTC";
 
     pub fn serialize<S>(
         date: &DateTime<Utc>,
@@ -167,6 +168,18 @@ fn main() -> Result<(), promptly::ReadlineError> {
             process::exit(0);
         },
         _ => ()
+    }
+
+    if path::Path::new(&specification_file).exists() {
+        println!("");
+        let prompt_message: &str = 
+            "Existing SPEC file already exist. Override?";
+        let do_override: bool = 
+            promptly::prompt_default(prompt_message, false)?;
+
+        if !do_override {
+            process::exit(0);
+        }
     }
 
     let name: String = promptly::prompt("Project Name")?;
