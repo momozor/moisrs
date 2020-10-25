@@ -15,6 +15,12 @@ specification (SRS) easily.
 
 > Please make sure that `.cargo/bin/` is in your `PATH`.
 
+### Directly from Github with git
+
+`cargo install --git https://github.com/momozor/moisrs`
+
+### Locally
+
 `cargo install --path .`
 
 
