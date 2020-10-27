@@ -1,17 +1,9 @@
-//  Copyright 2020 (C) Momozor <momozor4@gmail.com>
-
-//  This program is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+/*  Copyright (c) 2020, Momozor <momozor4@gmail.com>
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the BSD-style license found in the
+ *  LICENSE file in the root directory of this source tree.
+ */
 
 extern crate chrono;
 extern crate clap;
@@ -153,7 +145,7 @@ fn show_specification_as_table(filename: String) {
 
 fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
-        .version("0.2.0")
+        .version("0.3.0")
         .about(
             "Generate and view software requirement specification (SRS) easily"
         )

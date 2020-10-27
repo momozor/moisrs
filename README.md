@@ -6,7 +6,7 @@ specification (SRS) easily.
 
 ## Version
 
-0.2.0
+0.3.0
 
 
 ## Installation
@@ -44,6 +44,5 @@ at https://github.com/momozor/moisrs.
 
 ## License
 
-The software is available as free software under the terms of
-the [GPL-3.0 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
-For further details, please see COPYING file.
+This software is released under the BSD-3-Clause license. Please see
+LICENSE file for more details.
