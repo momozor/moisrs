@@ -1,6 +1,6 @@
 # Moisrs
 
-> NOTE: This project has been archived and the efforts are being focused on moisrs-gui.
+> NOTE: This project has been archived.
 
 *moisrs* is a CLI program to generate and view informal software requirement
 specification (SRS) easily.
