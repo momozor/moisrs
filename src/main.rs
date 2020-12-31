@@ -166,10 +166,10 @@ fn main() -> Result<(), promptly::ReadlineError> {
         println!("");
         let prompt_message: &str = 
             "Existing SPEC file already exist. Override?";
-        let do_override: bool = 
+        let do_overwrite: bool = 
             promptly::prompt_default(prompt_message, false)?;
 
-        if !do_override {
+        if !do_overwrite {
             process::exit(0);
         }
     }
