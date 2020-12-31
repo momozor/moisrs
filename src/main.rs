@@ -145,15 +145,15 @@ fn show_specification_as_table(filename: String) {
 
 fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
-        .version("0.3.0")
+        .version("0.4.0")
         .about(
             "Generate and view software requirement specification (SRS) easily"
         )
         .author("Momozor <momozor4@gmail.com>")
-        .arg("-s, --show 'View existing SPEC file in ASCII table format'")
+        .arg("-s, --show 'View existing SPECIFICATION file in ASCII table format'")
         .get_matches();
 
-    let specification_file: String = "SPEC".to_string();
+    let specification_file: String = "SPECIFICATION".to_string();
     match matches.occurrences_of("show") {
         1 => {
             show_specification_as_table(specification_file);
@@ -165,7 +165,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
     if path::Path::new(&specification_file).exists() {
         println!("");
         let prompt_message: &str = 
-            "Existing SPEC file already exist. Override?";
+            "Existing SPECIFICATION file already exist. Overwrite?";
         let do_overwrite: bool = 
             promptly::prompt_default(prompt_message, false)?;
 
