@@ -1,14 +1,11 @@
 # Moisrs
 
-> NOTE: This project has been archived.
-
 *moisrs* is a CLI program to generate and view informal software requirement
 specification (SRS) easily.
 
-
 ## Version
 
-0.4.0
+0.4.1
 
 ## Installation
 
@@ -29,10 +26,10 @@ specification (SRS) easily.
 
 *moisrs* comes as a CLI program.
 Once installed, you can invoke *moisrs* from the command line to generate a
-`SPEC` YAML formatted file based on your software/project requirements.
+`SPECIFICATION` YAML formatted file based on your software/project requirements.
 
 To view the YAML file as table, just run `moisrs --show` in the directory
-where `SPEC` file is located.
+where `SPECIFICATION` file is located.
 
 For more details, invoke `moisrs --help`.
 

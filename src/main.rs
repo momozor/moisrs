@@ -93,7 +93,7 @@ impl Specification {
     }
 }
 
-fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
+fn print_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     let name: String = promptly::prompt("Requirement Name")?;
     let explanation: String = promptly::prompt("Explanation")?;
     let priority: String = promptly::prompt("Priority")?;
@@ -101,7 +101,7 @@ fn show_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     Ok(Requirement::new(&name, &explanation, &priority))
 }
 
-fn show_specification_as_table(filename: String) {
+fn print_specification_as_table(filename: String) {
     let specification_source: String = fs::read_to_string(filename)
         .expect("Cannot open SPEC file for reading!");
     let specification: Specification =
@@ -145,7 +145,7 @@ fn show_specification_as_table(filename: String) {
 
 fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
-        .version("0.4.0")
+        .version("0.4.1")
         .about(
             "Generate and view software requirement specification (SRS) easily"
         )
@@ -156,7 +156,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
     let specification_file: String = "SPECIFICATION".to_string();
     match matches.occurrences_of("show") {
         1 => {
-            show_specification_as_table(specification_file);
+            print_specification_as_table(specification_file);
             process::exit(0);
         },
         _ => ()
@@ -196,7 +196,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
             want_new_requirement = false;
         }
         else if do_proceed {
-            &specification.requirements.push(match show_requirement_prompt() {
+            &specification.requirements.push(match print_requirement_prompt() {
                 Ok(requirement) => requirement,
                 Err(_) => panic!("Requirement is empty!"),
             });
