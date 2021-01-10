@@ -6,13 +6,8 @@
  */
 
 extern crate chrono;
-extern crate clap;
 extern crate serde;
 extern crate serde_yaml;
-#[macro_use] extern crate prettytable;
-extern crate promptly;
-
-const SPECIFICATION_FILENAME: &str = "SPECIFICATION";
 
 #[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Requirement {

@@ -17,7 +17,7 @@ use std::process;
 use std::path;
 use moisrs::{Requirement, Specification};
 
-fn print_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
+fn requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     let name: String = promptly::prompt("Requirement Name")?;
     let explanation: String = promptly::prompt("Explanation")?;
     let priority: String = promptly::prompt("Priority")?;
@@ -36,21 +36,11 @@ fn print_specification_as_table(filename: String) {
 
     let mut table = prettytable::Table::new();
 
-    table.add_row(prettytable::row![
-        "Project Name: ", specification.name
-    ]);
-    table.add_row(prettytable::row![
-        "Last Revised: ", specification.last_revised
-    ]);
-    table.add_row(prettytable::row![
-        "Maintainer: ", specification.maintainer
-    ]);
-    table.add_row(prettytable::row![
-        "Target Version: ", specification.target_version
-    ]);
-    table.add_row(prettytable::row![
-        "Status: ", specification.status
-    ]);
+    table.add_row(prettytable::row!["Project Name: ", specification.name]);
+    table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
+    table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
+    table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
+    table.add_row(prettytable::row!["Status: ", specification.status]);
 
     for requirement in specification.requirements.iter() {
         table.add_empty_row();
@@ -71,7 +61,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
         .version("0.4.1")
         .about(
-            "Generate and view software requirement specification (SRS) easily"
+            "Generate and view informal software requirement specification (ISRS) easily"
         )
         .author("Momozor <momozor4@gmail.com>")
         .arg("-s, --show 'View existing SPECIFICATION file in ASCII table format'")
@@ -120,7 +110,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
             want_new_requirement = false;
         }
         else if do_proceed {
-            &specification.requirements.push(match print_requirement_prompt() {
+            &specification.requirements.push(match requirement_prompt() {
                 Ok(requirement) => requirement,
                 Err(_) => panic!("Requirement is empty!"),
             });
