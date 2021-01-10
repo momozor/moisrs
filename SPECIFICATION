@@ -1,0 +1,16 @@
+---
+name: moisrs
+last_revised: "2021-01-10 16:51:02 UTC"
+maintainer: Momozor <momozor4@gmail.com>
+target_version: 1.0.0
+status: Development
+requirements:
+  - name: Generate SPECIFICATION file
+    explanation: "With user input, generate a SPECIFICATION file in YAML format (for readability)"
+    priority: High
+  - name: Print SPECIFICATION file data as ASCII table
+    explanation: As said in the requirement name
+    priority: High
+  - name: "Receive SPECIFICATION file data from stdin (i.e, unix pipe)"
+    explanation: As said in the requirement name
+    priority: Low
