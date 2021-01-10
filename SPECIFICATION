@@ -7,10 +7,13 @@ status: Development
 requirements:
   - name: Generate SPECIFICATION file
     explanation: "With user input, generate a SPECIFICATION file in YAML format (for readability)"
+    status: Complete
     priority: High
   - name: Print SPECIFICATION file data as ASCII table
     explanation: As said in the requirement name
+    status: Complete
     priority: High
   - name: "Receive SPECIFICATION file data from stdin (i.e, unix pipe)"
     explanation: As said in the requirement name
+    status: Incomplete
     priority: Low
