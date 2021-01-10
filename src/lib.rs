@@ -13,6 +13,7 @@ extern crate serde_yaml;
 pub struct Requirement {
     pub name: String,
     pub explanation: String,
+    pub status: String,
     pub priority: String,
 }
 
@@ -56,10 +57,11 @@ pub struct Specification {
 }
 
 impl Requirement {
-    pub fn new(name: &str, explanation: &str, priority: &str) -> Self {
+    pub fn new(name: &str, explanation: &str, status: &str, priority: &str) -> Self {
         Requirement {
             name: name.to_string(),
             explanation: explanation.to_string(),
+            status: status.to_string(),
             priority: priority.to_string(),
         }
     }

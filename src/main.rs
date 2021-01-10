@@ -20,9 +20,10 @@ use moisrs::{Requirement, Specification};
 fn requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     let name: String = promptly::prompt("Requirement Name")?;
     let explanation: String = promptly::prompt("Explanation")?;
+    let status: String = promptly::prompt("Status")?;
     let priority: String = promptly::prompt("Priority")?;
 
-    Ok(Requirement::new(&name, &explanation, &priority))
+    Ok(Requirement::new(&name, &explanation, &status,  &priority))
 }
 
 fn print_specification_as_table(filename: String) {
@@ -45,6 +46,7 @@ fn print_specification_as_table(filename: String) {
         table.add_empty_row();
         table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
         table.add_row(prettytable::row!["Explanation: ", requirement.explanation]);
+        table.add_row(prettytable::row!["Status: ", requirement.status]);
         table.add_row(prettytable::row!["Priority: ", requirement.priority]);
     }
     table.printstd();
@@ -52,7 +54,7 @@ fn print_specification_as_table(filename: String) {
 
 fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
-        .version("0.4.1")
+        .version("0.5.0")
         .about(
             "Generate and view informal software requirement specification (ISRS) easily"
         )
