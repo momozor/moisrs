@@ -35,7 +35,6 @@ fn print_specification_as_table(filename: String) {
     };
 
     let mut table = prettytable::Table::new();
-
     table.add_row(prettytable::row!["Project Name: ", specification.name]);
     table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
     table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
@@ -44,15 +43,9 @@ fn print_specification_as_table(filename: String) {
 
     for requirement in specification.requirements.iter() {
         table.add_empty_row();
-        table.add_row(prettytable::row![
-            "Requirement Name: ", requirement.name
-        ]);
-        table.add_row(prettytable::row![
-            "Explanation: ", requirement.explanation
-        ]);
-        table.add_row(prettytable::row![
-            "Priority: ", requirement.priority
-        ]);
+        table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
+        table.add_row(prettytable::row!["Explanation: ", requirement.explanation]);
+        table.add_row(prettytable::row!["Priority: ", requirement.priority]);
     }
     table.printstd();
 }
@@ -128,3 +121,4 @@ fn main() -> Result<(), promptly::ReadlineError> {
 
     Ok(())
 }
+
