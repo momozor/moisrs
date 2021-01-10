@@ -16,9 +16,9 @@ const SPECIFICATION_FILENAME: &str = "SPECIFICATION";
 
 #[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Requirement {
-    name: String,
-    explanation: String,
-    priority: String,
+    pub name: String,
+    pub explanation: String,
+    pub priority: String,
 }
 
 mod moisrs_date {
