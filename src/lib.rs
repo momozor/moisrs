@@ -51,14 +51,13 @@ mod moisrs_date {
 
 #[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Specification {
-    name: String,
-
+    pub name: String,
     #[serde(with = "moisrs_date")] 
-    last_revised: chrono::DateTime<chrono::Utc>,
-    maintainer: String,
-    target_version: String,
-    status: String,
-    requirements: Vec<Requirement>,
+    pub last_revised: chrono::DateTime<chrono::Utc>,
+    pub maintainer: String,
+    pub target_version: String,
+    pub status: String,
+    pub requirements: Vec<Requirement>,
 }
 
 impl Requirement {
