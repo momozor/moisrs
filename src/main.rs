@@ -1,4 +1,4 @@
-/*  Copyright (c) 2020, Momozor <momozor4@gmail.com>
+/*  Copyright (c) 2020-2021, Momozor <momozor4@gmail.com>
  *  All rights reserved.
  *
  *  This source code is licensed under the BSD-style license found in the
@@ -103,11 +103,11 @@ fn print_requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
 
 fn print_specification_as_table(filename: String) {
     let specification_source: String = fs::read_to_string(filename)
-        .expect("Cannot open SPEC file for reading!");
+        .expect("Cannot open SPECIFICATION file for reading!");
     let specification: Specification =
         match serde_yaml::from_str(&specification_source) {
             Ok(specification) => specification,
-            Err(_) => panic!("SPEC file cannot be parsed!"),
+            Err(_) => panic!("SPECIFICATION file cannot be parsed!"),
     };
 
     let mut table = prettytable::Table::new();
