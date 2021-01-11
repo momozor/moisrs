@@ -88,7 +88,7 @@ impl Specification {
 }
 
 
-fn create_requirement_rows(mut table: prettytable::Table, specification: Specification) -> prettytable::Table {
+pub fn create_requirement_rows(mut table: prettytable::Table, specification: Specification) -> prettytable::Table {
     for requirement in specification.requirements.iter() {
         table.add_empty_row();
         table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);

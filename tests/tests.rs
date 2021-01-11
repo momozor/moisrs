@@ -43,7 +43,7 @@ fn test_table_creation() {
             "devel <devel6@gmail.com>",
             "1.0.0",
             "Development",
-            &mut vec![]);
+            &mut vec![moisrs::Requirement::new("METAOMATA", "NONE", "Complete", "Low")]);
     
     let mut table = prettytable::Table::new();
     table.add_row(prettytable::row!["Project Name: ", specification.name]);
@@ -52,9 +52,11 @@ fn test_table_creation() {
     table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
     table.add_row(prettytable::row!["Status: ", specification.status]);
 
-    for requirement in specification.requirements.iter() {
-        table.add_empty_row();
-        table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
-    }
+    table.add_empty_row();
+    table.add_row(prettytable::row!["Requirement Name: ", specification.requirements[0].name]);
+    table.add_row(prettytable::row!["Explanation: ", specification.requirements[0].explanation]);
+    table.add_row(prettytable::row!["Status: ", specification.requirements[0].status]);
+    table.add_row(prettytable::row!["Priority: ", specification.requirements[0].priority]);
+    
     assert_eq!(table, moisrs::create_table(specification));
 }
