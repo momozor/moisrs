@@ -107,7 +107,7 @@ pub fn create_table(specification: Specification) -> prettytable::Table {
     table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
     table.add_row(prettytable::row!["Status: ", specification.status]);
     
-    create_requirement_rows(table.clone(), specification);
+    create_requirement_rows(table, specification);
     
     table
 }
