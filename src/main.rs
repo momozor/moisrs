@@ -26,6 +26,49 @@ fn requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     Ok(Requirement::new(&name, &explanation, &status,  &priority))
 }
 
+fn create_requirement_rows(mut table: prettytable::Table, specification: Specification) -> prettytable::Table {
+    for requirement in specification.requirements.iter() {
+        table.add_empty_row();
+        table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
+        table.add_row(prettytable::row!["Explanation: ", requirement.explanation]);
+        table.add_row(prettytable::row!["Status: ", requirement.status]);
+        table.add_row(prettytable::row!["Priority: ", requirement.priority]);
+    }
+    table
+}
+
+fn create_table(specification: Specification) -> prettytable::Table {
+    let mut table = prettytable::Table::new();
+    table.add_row(prettytable::row!["Project Name: ", specification.name]);
+    table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
+    table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
+    table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
+    table.add_row(prettytable::row!["Status: ", specification.status]);
+    
+    create_requirement_rows(table, specification);
+    
+    table
+}
+
+#[test]
+fn test_table_creation() {
+    let specification =
+        moisrs::Specification::new(
+            "MOTEST",
+            "devel <devel6@gmail.com>",
+            "1.0.0",
+            "Development",
+            &mut vec![]);
+    
+    let mut table = prettytable::Table::new();
+    table.add_row(prettytable::row!["Project Name: ", specification.name]);
+    table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
+    table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
+    table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
+    table.add_row(prettytable::row!["Status: ", specification.status]);
+    assert_eq!(table, create_table(specification));
+}
+
 fn print_specification_as_table(filename: String) {
     let specification_source: String = fs::read_to_string(filename)
         .expect("Cannot open SPECIFICATION file for reading!");
