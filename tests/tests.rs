@@ -1,7 +1,7 @@
 use moisrs;
 
 #[test]
-fn test_requirement_creation_properties() {
+fn requirement_creation_properties() {
     let dummy_requirement =
         moisrs::Requirement::new(
             "Test (REQUIREMENT) name",
@@ -17,7 +17,7 @@ fn test_requirement_creation_properties() {
 }
 
 #[test]
-fn test_specification_creation_properties() {
+fn specification_creation_properties() {
     let dummy_specification =
         moisrs::Specification::new(
             "MOTEST",
