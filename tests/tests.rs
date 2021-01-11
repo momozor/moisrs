@@ -1,3 +1,4 @@
+#[macro_use] extern crate prettytable;
 use moisrs;
 
 #[test]
@@ -32,4 +33,28 @@ fn specification_creation_properties() {
     assert_eq!("Development", dummy_specification.status);
     assert_eq!("Complete", dummy_specification.requirements[0].status);
     assert_eq!("Low", dummy_specification.requirements[0].priority);
+}
+
+#[test]
+fn test_table_creation() {
+    let specification =
+        moisrs::Specification::new(
+            "MOTEST",
+            "devel <devel6@gmail.com>",
+            "1.0.0",
+            "Development",
+            &mut vec![]);
+    
+    let mut table = prettytable::Table::new();
+    table.add_row(prettytable::row!["Project Name: ", specification.name]);
+    table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
+    table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
+    table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
+    table.add_row(prettytable::row!["Status: ", specification.status]);
+
+    for requirement in specification.requirements.iter() {
+        table.add_empty_row();
+        table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
+    }
+    assert_eq!(table, moisrs::create_table(specification));
 }

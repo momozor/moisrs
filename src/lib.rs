@@ -8,6 +8,7 @@
 extern crate chrono;
 extern crate serde;
 extern crate serde_yaml;
+#[macro_use] extern crate prettytable;
 
 #[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Requirement {
@@ -84,4 +85,29 @@ impl Specification {
             requirements: requirements.to_vec(),
         }
     }
+}
+
+
+fn create_requirement_rows(mut table: prettytable::Table, specification: Specification) -> prettytable::Table {
+    for requirement in specification.requirements.iter() {
+        table.add_empty_row();
+        table.add_row(prettytable::row!["Requirement Name: ", requirement.name]);
+        table.add_row(prettytable::row!["Explanation: ", requirement.explanation]);
+        table.add_row(prettytable::row!["Status: ", requirement.status]);
+        table.add_row(prettytable::row!["Priority: ", requirement.priority]);
+    }
+    table
+}
+
+pub fn create_table(specification: Specification) -> prettytable::Table {
+    let mut table = prettytable::Table::new();
+    table.add_row(prettytable::row!["Project Name: ", specification.name]);
+    table.add_row(prettytable::row!["Last Revised: ", specification.last_revised]);
+    table.add_row(prettytable::row!["Maintainer: ", specification.maintainer]);
+    table.add_row(prettytable::row!["Target Version: ", specification.target_version]);
+    table.add_row(prettytable::row!["Status: ", specification.status]);
+    
+    create_requirement_rows(table.clone(), specification);
+    
+    table
 }
