@@ -57,8 +57,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
 
     if path::Path::new(&specification_file).exists() {
         println!("");
-        let prompt_message: &str = 
-            "Existing SPECIFICATION file already exist. Overwrite?";
+        let prompt_message: String = format!("Existing {} file already exist. Overwrite?", specification_file);
         let do_overwrite: bool = 
             promptly::prompt_default(prompt_message, false)?;
 

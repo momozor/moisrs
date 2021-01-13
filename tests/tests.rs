@@ -36,7 +36,7 @@ fn specification_creation_properties() {
 }
 
 #[test]
-fn test_table_creation() {
+fn table_creation() {
     let specification =
         moisrs::Specification::new(
             "MOTEST",
