@@ -16,6 +16,11 @@ use std::process;
 use std::path;
 use moisrs::{Requirement, Specification, create_table};
 
+const MAJOR_VERSION: i32 = 0;
+const MINOR_VERSION: i32 = 6;
+const PATCH_VERSION: i32 = 0;
+const SPECIFICATION_FILE: &str = "SPECIFICATION";
+
 fn requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
     let name: String = promptly::prompt("Requirement Name")?;
     let explanation: String = promptly::prompt("Explanation")?;
@@ -27,37 +32,34 @@ fn requirement_prompt() -> Result<Requirement, promptly::ReadlineError> {
 
 fn print_specification_as_table(filename: String) {
     let specification_source: String = fs::read_to_string(filename)
-        .expect("Cannot open SPECIFICATION file for reading!");
+        .expect(&*format!("Cannot open {} file for reading!", SPECIFICATION_FILE));
     let specification: Specification =
         match serde_yaml::from_str(&specification_source) {
             Ok(specification) => specification,
-            Err(_) => panic!("SPECIFICATION file cannot be parsed!"),
+            Err(_) => panic!(format!("{} file cannot be parsed!", SPECIFICATION_FILE)),
     };
     create_table(specification).printstd();
 }
 
 fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
-        .version("0.5.0")
-        .about(
-            "Generate and view informal software requirement specification (ISRS) easily"
-        )
+        .version(&*format!("{}.{}.{}", MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION))
+        .about("Generate and view informal software requirement specification (ISRS) easily")
         .author("Momozor <momozor4@gmail.com>")
         .arg("-s, --show 'View existing SPECIFICATION file in ASCII table format'")
         .get_matches();
 
-    let specification_file: String = "SPECIFICATION".to_string();
     match matches.occurrences_of("show") {
         1 => {
-            print_specification_as_table(specification_file);
+            print_specification_as_table(SPECIFICATION_FILE.to_string());
             process::exit(0);
         },
         _ => ()
     }
 
-    if path::Path::new(&specification_file).exists() {
+    if path::Path::new(SPECIFICATION_FILE).exists() {
         println!("");
-        let prompt_message: String = format!("Existing {} file already exist. Overwrite?", specification_file);
+        let prompt_message: String = format!("Existing {} file already exist. Overwrite?", SPECIFICATION_FILE);
         let do_overwrite: bool = 
             promptly::prompt_default(prompt_message, false)?;
 
@@ -97,7 +99,7 @@ fn main() -> Result<(), promptly::ReadlineError> {
 
     match serde_yaml::to_string(&specification) {
         Ok(specification) => {
-            fs::write(specification_file, specification)
+            fs::write(SPECIFICATION_FILE, specification)
                 .expect("Cannot write to specification file!");
         },
         Err(_) => 
