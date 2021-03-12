@@ -44,17 +44,19 @@ fn print_specification_as_table(filename: String) {
 fn main() -> Result<(), promptly::ReadlineError> {
     let matches = clap::App::new("moisrs")
         .version(&*format!("{}.{}.{}", MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION))
-        .about("Generate and view informal software requirement specification (ISRS) easily")
+        .about("Generate and view informal software requirement specification (ISRS) easily.")
         .author("Momozor <momozor4@gmail.com>")
-        .arg("-s, --show 'View existing SPECIFICATION file in ASCII table format'")
+        .arg(clap::Arg::new("show")
+             .short('s')
+             .long("show")
+             .value_name("FILE")
+             .takes_value(true)
+             .about("View existing SPECIFICATION file in ASCII table format."))
         .get_matches();
 
-    match matches.occurrences_of("show") {
-        1 => {
-            print_specification_as_table(SPECIFICATION_FILE.to_string());
-            process::exit(0);
-        },
-        _ => ()
+    if let Some(show) = matches.value_of("show") {
+        print_specification_as_table(show.to_string());
+        process::exit(0);
     }
 
     if path::Path::new(SPECIFICATION_FILE).exists() {
